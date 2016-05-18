@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8"/>
+	<meta name="description" content="Spike Game"/>
+	<title>Haikyuu!! Spike Game</title>
+	<link rel="stylesheet" href="spikestyle.css">
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+</head>
+
+<body>
+	<div id="SplashScreen"> 
+		<img id="hitit" src = "hit.png" alt="Tsukki Was Here" />
+		<h1>Spike Practice with Tsukishima Kei!</h1>
+		<p><b>[Goal]</b> Hit 10 water bottles, with the best accuracy as possible.</p>
+		<p><b>[Controls]</b> Use your up-down-left-right keyboard arrows to move Tsukki around. Hit the Space Bar to spike volleyballs towards your target (the water bottles)--each tap spikes 1 volleyball. </p>
+		<p><i>*HINT* Spikes will not hit the bottle if shot from too close--just like in real volleyball practice, the point is to perfect your distance accuracy!</i>
+			<div id="kuroowarning">
+				<img id='kuroo' src = 'kuroo.png' alt = 'kuroo picture' />
+				<p><b>WATCH OUT FOR KUROO!!!</b> If your volleyball hits Kuroo, he will block the shot and you will <b>LOSE</b> 5 points!</p>
+			</div> 
+		<h4><img src="dontmind.png" alt="bro"/> <br> DON'T MIND, DON'T MIND! You will NOT lose points if Tsukki collides with any un-hit bottles or Kuroo.</h4> 
+		<input id="StartButton" type="button" value="Start"/>
+	</div>
+	<div id="container" style="display: none;">
+			<div id='hero'></div>
+			<div id='enemies'></div>
+			<div id='blocker'></div>
+			<div id='bullets'></div>
+				<h2>Score</h2>	
+			<div id='score'>0</div>
+				<h3>Spikes</h3>
+			<div id='accuracy'>0</div>
+			<input id="restart" type="button" value="Restart Game"/>
+	</div>
+
+	<script>
+
+
+	$(document).ready(function(){
+			$("#StartButton").click(function(){
+				$("#SplashScreen").hide();
+				$("#container").show();
+			});
+		});
+
+	var score = 0;
+	var accuracy = 0;
+	var hero = {
+		x: 300,
+		y: 450
+	}
+	var enemies = [{x: 50, y:10}, {x: 150, y:30}, {x: 450, y:41}, {x: 550, y:50}];
+	var blocker = [{x: 100, y: 50}];
+	var bullets = [];
+	var audio = new Audio('haikyuu.mp3');
+	audio.loop = true;
+	audio.play();
+
+
+	$("#restart").click(function(){
+		location.reload();
+	});
+
+	function displayHero(){
+		document.getElementById('hero').style['left'] = hero.x + "px";
+		document.getElementById('hero').style['top'] = hero.y + "px";
+	}
+	function displayEnemies(){
+		var output = '';
+		for(var i=0; i<enemies.length; i++){
+			output += "<div class='enemy1' style='top:"+enemies[i].y+"px; left:"+enemies[i].x+"px;''></div>";
+		}
+		document.getElementById('enemies').innerHTML = output;
+	}
+	function displayBlocker(){
+		var output = '';
+		for(var i=0; i<blocker.length; i++){
+			output += "<div class='blocker' style='top:"+blocker[i].y+"px; left:" +blocker[i].x+"px;''></div>";
+		}
+		document.getElementById('blocker').innerHTML = output;
+	}
+	function moveEnemies(){
+		for(var i=0; i<enemies.length; i++){
+			enemies[i].y += 5; //speed of descent 
+
+			if(enemies[i].y > 520){ // lower limit 
+				enemies[i].y = 0;
+				enemies[i].x = Math.random()*500;
+			}
+		}
+	}
+	function moveBlocker(){
+		for(var k=0; k<blocker.length; k++){
+			blocker[k].y += 3;
+
+			if(blocker[k].y > 490){
+				blocker[k].y = 0;
+				blocker[k].x = Math.random()*700;
+			}
+		}
+	}
+	function displayBullets(){
+		var output = '';
+		for(var i=0; i<bullets.length; i++){
+			output += "<div class='bullets' style='top:"+bullets[i].y+"px; left:"+bullets[i].x+"px;'></div>";
+		}
+		document.getElementById('bullets').innerHTML = output;
+	}
+	function moveBullets(){
+		for(var i=0; i<bullets.length; i++){
+			bullets[i].y -= 20;
+			if (bullets[i].y < 20){
+				bullets.shift();
+			}
+		}		
+	}
+	function displayScore(){
+		document.getElementById('score').innerHTML = score;
+	}
+
+	function displayAccuracy(){
+		document.getElementById('accuracy').innerHTML = accuracy;
+	}
+	
+	document.onkeydown = function(a) {
+		if(a.keyCode == 37 && hero.x > 30){
+			hero.x -= 30;
+		} else if(a.keyCode == 39 && hero.x < 750){
+			hero.x += 30;
+		} else if(a.keyCode == 38 && hero.y > 50){
+			hero.y -= 30;
+		} else if(a.keyCode == 40 && hero.y < 475){
+			hero.y += 30;
+		} else if(a.keyCode == 32){
+			bullets.push({x: hero.x+20, y: hero.y-30});
+			moveBullets();
+			accuracy += 1;
+		}
+	}
+
+	function detectCollision(){
+		for(var i=0; i<bullets.length; i++){
+			for(var j=0; j<enemies.length; j++){
+				if(Math.abs(bullets[i].x - enemies[j].x) < 30 && Math.abs(bullets[i].y - enemies[j].y) < 30) {
+					score += 1;	
+					bullets.pop({x: bullets[i].x, y: bullets[i].y});
+					enemies.splice(j,1);
+					enemies.push({x: Math.random()*700, y: 0});
+					if(score == 10){
+						var content = score / accuracy;
+							if(content < .75){
+							alert("Tch, your accuracy is: " + (content.toFixed(4) * 100) + "%" + " ... you need more practice!");
+							}
+							else if(content > .76){
+								alert("Great job! Your accuracy is " + (content.toFixed(4) * 100) + "%" + " ... fly high!");
+							}	
+						document.location.reload();
+					}
+				}	
+			}				
+			for(var k=0; k<blocker.length; k++){
+				if (Math.abs(bullets[i].x - blocker[k].x) < 80 && Math.abs(bullets[i].y - blocker[k].y) < 80) {
+					score -= 5;
+					bullets.pop({x: bullets[i].x, y: bullets[i].y});
+
+				}
+				
+			}	
+		}	
+				
+	}	
+
+	setInterval(gameLoop, 100);
+
+
+	function gameLoop(){
+		displayHero();
+		moveEnemies();
+		moveBlocker();
+		displayEnemies();
+		moveBullets();
+		displayBullets();
+		detectCollision();
+		displayScore();
+		displayBlocker();
+		displayAccuracy();
+	}
+	</script> 
+
+</body>
+</html>

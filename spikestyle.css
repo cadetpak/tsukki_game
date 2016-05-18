@@ -1,0 +1,133 @@
+body{
+		background-color: #F7CE79;
+		font-family: Arial;
+}
+	#SplashScreen{
+		padding: 0px 15px 15px 15px;
+		border: 3px solid orange;
+		width: 700px;
+		border-radius: 20px;
+	}
+		h1{
+			font-size: 20px
+		}
+		p{
+			font-size: 15px;
+		}
+		h4{
+			border: 2px solid white;
+			font-size: 15px;
+			width: 390px;
+			padding: 4px;
+			border-radius: 20px;
+
+		}
+		#hitit{
+			width: 200px;
+			height: 200px;
+			background-size: cover;
+		}
+		#kuroowarning{
+			border: 2px solid red;
+			border-radius: 20px;
+			width: 500px;
+			padding: 10px;
+		}
+
+		#kuroo{
+			width: 325px;
+			height: 150px;
+		}
+		#StartButton{
+			color: orange;
+			border: 2px solid orange;
+			border-radius: 20px;
+			font-size: 15px;
+			font-weight: bold;
+			margin-left: 50px;
+		}
+
+	#container{
+		background: url('backgroundnet.png');
+		width:800px;
+		height:550px;
+		background-size: cover;
+		border: 1px solid black;
+	}
+		h2{
+			position: absolute;
+			border: 3px solid black;
+			top: 10px;
+			left: 815px; 
+			background-color: white;
+			padding: 5px;
+			font-size: 15px;
+		}
+		h3{
+			position: absolute;
+			border: 3px solid black;
+			top: 120px;
+			left: 815px;
+			background-color: white;
+			padding: 5px;
+			font-size: 15px;
+		}
+		#hero{
+			background: url('tsukki.png');
+			width:70px;
+			height:95px;
+			position:absolute;
+			background-size: cover;
+			background-position: center;
+			background-repeat: no-repeat;
+		}
+		.enemy1{
+			background: url('bottle.png');
+			width:30px;
+			height:30px;
+			position:absolute;
+			background-size: cover;
+			background-position: center;
+		}	
+		.blocker{
+			background: url('kuroo.png');
+			width: 200px;
+			height: 75px;
+			position: absolute;
+			background-size: cover;
+			background-position: center;
+		}
+		.bullets{
+			background: url('volleyball.png');
+			width:30px;
+			height:30px;
+			position:absolute;
+			background-size: cover;
+			background-position: center;
+		}
+		#score{
+			position:absolute;
+			border:5px solid orange;
+			top:60px;
+			left:815px;
+			background-color:white;
+			padding:10px;
+			font-size:30px;
+		}
+		#accuracy{
+			position: absolute;
+			border: 5px solid orange;
+			top: 175px;
+			left: 815px;
+			background-color: white;
+			padding: 10px;
+			font-size: 30px;
+		}
+		#restart{
+			color: orange;
+			border: 2px solid orange;
+			border-radius: 30px;
+			font-size: 12px;
+			margin-left: 815px;
+			margin-top: 300px;
+		}
